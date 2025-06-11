@@ -1,27 +1,37 @@
 import express from "express";
 import { configDotenv } from "dotenv";
-import jwt from "jsonwebtoken"
+import jwt, { JwtPayload } from "jsonwebtoken"
 import { CustomRequest } from "../models/CustomRequest";
+import { BasicResponse } from "../models/response";
 configDotenv();
 
-export function verifyToken(req: CustomRequest, res: express.Response, next: express.NextFunction): void {
+export function verifyToken(req: CustomRequest, res: express.Response<BasicResponse>, next: express.NextFunction): void {
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1]; // Bearer <TOKEN>
 
     if (!token) {
-        res.status(401).json({ error: "No token provided" });
+        res.status(401).json({ status: 500, error: true, message: "No Token Provided", data: [] });
         return;
     }
     const SECRET = process.env.JWT_SECRET;
     if (!SECRET) {
-        res.status(500).json({ error: "JWT_SECRET not set" });
+        res.status(401).json({ status: 500, error: true, message: "Internal Server Error", data: [] });
         return;
     }
 
     jwt.verify(token, SECRET, (err, decoded) => {
-        if (err) return res.status(403).json({ error: "Invalid or expired token" });
-        req.user = decoded;
+        if (err || typeof decoded !== "object" || !("email" in decoded)) {
+          res.status(403).json({
+            status: 403,
+            error: true,
+            message: "Token Invalid or Expired",
+            data: [],
+          });
+          return;
+        }
+    
+        req.user = (decoded as JwtPayload).email;
         next();
-    });
+      });
 }
 

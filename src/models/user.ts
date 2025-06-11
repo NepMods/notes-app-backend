@@ -10,3 +10,7 @@ export interface UserWithToken {
     password: string;
     token: string;
 }
+
+export interface UserWithoutPassword {
+    email: string;
+}
