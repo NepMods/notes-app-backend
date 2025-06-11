@@ -1,9 +1,10 @@
 import express from "express"
 import {hash} from "bcrypt"
-import { getMongoClient } from "../../components/mongodb";
 import { checkUser, registerUser } from "../../libs/users";
 import { BasicResponse } from "../../models/response";
 import { UserWithoutToken } from "../../models/user";
+import { configDotenv } from "dotenv";
+configDotenv();
 
 export async function register(req: express.Request, res: express.Response<BasicResponse>) {
     const { email, password } = req.body;
