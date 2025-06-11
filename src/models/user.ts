@@ -1,3 +1,9 @@
+/* 
+
+Just Model defination
+
+*/
+
 export interface UserWithoutToken {
     email: string;
     username: string;

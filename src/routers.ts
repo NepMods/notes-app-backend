@@ -5,9 +5,12 @@ import { verifyToken } from "./middleware/verifyToken";
 import { addNoteForUser, deleteNoteForUser, getNotesForUser, updateNoteForUser } from "./notes/notes";
 export const router : express.Router = express.Router();
 
+
+// User System
 router.post("/register", register);
 router.post("/login", login);
 
+// Notes System
 router.get("/notes", verifyToken, getNotesForUser);
 router.post("/notes", verifyToken, addNoteForUser);
 router.put("/notes/:id", verifyToken, updateNoteForUser);

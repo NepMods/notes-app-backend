@@ -1,5 +1,10 @@
+
+/*
+Library for notes
+*/
+
 import { MongoClient, ObjectId } from "mongodb";
-import { getMongoClient } from "../components/mongodb";
+import { getMongoClient } from "./mongodb";
 import { configDotenv } from "dotenv";
 import { UserWithoutPassword, UserWithoutToken } from "../models/user";
 import { BasicResponse } from "../models/response";
@@ -7,6 +12,11 @@ import { compare } from "bcrypt";
 import jwt, { Jwt } from "jsonwebtoken";
 import { Note, NotesWithUser } from "../models/notes";
 configDotenv();
+
+
+/*
+get All notes of a user
+*/
 
 export async function getNotes(user: UserWithoutPassword): Promise<NotesWithUser> {
     const client: MongoClient = await getMongoClient();
@@ -37,6 +47,11 @@ export async function getNotes(user: UserWithoutPassword): Promise<NotesWithUser
     return ret;
 }
 
+
+/*
+add a new note
+*/
+
 export async function addNote(note: Note): Promise<boolean> {
     const client: MongoClient = await getMongoClient();
     const db = client.db(process.env.DB ?? "notes-app")
@@ -51,6 +66,10 @@ export async function addNote(note: Note): Promise<boolean> {
     }
 }
 
+
+/*
+Update a note
+*/
 
 export async function updateNote(note: Note, id: string): Promise<boolean> {
     const client: MongoClient = await getMongoClient();
@@ -69,6 +88,11 @@ export async function updateNote(note: Note, id: string): Promise<boolean> {
     }
 }
 
+
+
+/*
+Delete a note
+*/
 
 export async function deleteNote(id: string): Promise<boolean> {
     const client: MongoClient = await getMongoClient();

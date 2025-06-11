@@ -1,3 +1,6 @@
+/* 
+ Model Definaltion for notes
+*/
 import { UserWithoutPassword } from "./user"
 
 export interface Note {

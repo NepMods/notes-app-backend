@@ -5,7 +5,12 @@ import { CustomRequest } from "../models/CustomRequest";
 import { BasicResponse } from "../models/response";
 configDotenv();
 
+
+/* 
+ Middleware for verifying token
+*/
 export function verifyToken(req: CustomRequest, res: express.Response<BasicResponse>, next: express.NextFunction): void {
+    // Split the auth header
     const authHeader = req.headers["authorization"];
     const token = authHeader && authHeader.split(" ")[1]; // Bearer <TOKEN>
 
@@ -19,6 +24,7 @@ export function verifyToken(req: CustomRequest, res: express.Response<BasicRespo
         return;
     }
 
+    // Verify the token and proceed accordingly
     jwt.verify(token, SECRET, (err, decoded) => {
         if (err || typeof decoded !== "object" || !("email" in decoded)) {
           res.status(403).json({

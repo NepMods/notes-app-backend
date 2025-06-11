@@ -9,6 +9,18 @@ configDotenv();
 export async function register(req: express.Request, res: express.Response<BasicResponse>) {
     const { email, password } = req.body;
     
+
+    //Check Parameters
+    if (!email || !password) {
+        res.json({
+            status: 200,
+            message: "Please send all parameter.",
+            error: false,
+            data: [],
+        })
+        return;
+    }
+    // Chekc User
     const username: string = email.split("@")[0];
     const userExists = await checkUser(username);
     
@@ -22,6 +34,7 @@ export async function register(req: express.Request, res: express.Response<Basic
         return;
     }
     
+    // Hash the password
     const hashedPassword = await hash(password, 10);
     const user: UserWithoutToken = {
         email: email, 
@@ -29,6 +42,7 @@ export async function register(req: express.Request, res: express.Response<Basic
         username: username
     }
 
+    //Register
     const result = await registerUser(user); 
 
     if (result) {

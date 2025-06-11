@@ -6,7 +6,9 @@ import { BasicResponse } from "../models/response";
 import { Note } from "../models/notes";
 
 export async function getNotesForUser(req: CustomRequest, res: express.Response<BasicResponse>) {
+    
     const user: UserWithoutPassword = { email: req.user! }
+    
     if (!user.email) {
         res.json({
             status: 400,
@@ -16,6 +18,8 @@ export async function getNotesForUser(req: CustomRequest, res: express.Response<
         })      
         return;
     }
+
+    //Fetch Notes
     const userNotes = await getNotes(user);
 
     res.json({
@@ -38,6 +42,8 @@ export async function deleteNoteForUser(req: CustomRequest, res: express.Respons
         })
         return;
     }
+
+    // Delete a Note
     const deletedNotes = await deleteNote(id);
 
     if (deletedNotes) {
@@ -89,6 +95,8 @@ export async function updateNoteForUser(req: CustomRequest, res: express.Respons
         id, 
         email: user.email
     }
+
+    //Update a note
     const updateNote_s = await updateNote(newNote, id);
 
     if (updateNote_s) {
@@ -119,6 +127,7 @@ export async function addNoteForUser(req: CustomRequest, res: express.Response<B
         })
         return;
     }
+
     const user: UserWithoutPassword = { email: req.user!}
     if (!user.email) {
         res.json({
@@ -135,9 +144,11 @@ export async function addNoteForUser(req: CustomRequest, res: express.Response<B
         body,
         email: user.email
     }
-    const updateNote_s = await addNote(newNote);
 
-    if (updateNote_s) {
+    // Add a note
+    const added_note = await addNote(newNote);
+
+    if (added_note) {
         res.json({
             status: 200,
             message: "Note Added",

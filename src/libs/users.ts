@@ -1,5 +1,10 @@
+
+/*
+Library for users
+*/
+
 import { MongoClient } from "mongodb";
-import { getMongoClient } from "../components/mongodb";
+import { getMongoClient } from "./mongodb";
 import { configDotenv } from "dotenv";
 import { UserWithoutToken } from "../models/user";
 import { BasicResponse } from "../models/response";
@@ -7,6 +12,10 @@ import { compare } from "bcrypt";
 import jwt, { Jwt } from "jsonwebtoken";
 configDotenv();
 
+
+/*
+Check if username exits, idk why i used username, i could just use email
+*/
 export async function checkUser(username: string): Promise<boolean> {
     const client: MongoClient = await getMongoClient();
     const db = client.db(process.env.DB ?? "notes-app")
@@ -21,6 +30,9 @@ export async function checkUser(username: string): Promise<boolean> {
     }
 }
 
+/*
+Register a user
+*/
 export async function registerUser(user: UserWithoutToken): Promise<boolean> {
     const client: MongoClient = await getMongoClient();
     const db = client.db(process.env.DB ?? "notes-app")
@@ -34,6 +46,9 @@ export async function registerUser(user: UserWithoutToken): Promise<boolean> {
     }
 }
 
+/*
+Get a user by their email
+*/
 export async function getUser(email: string): Promise<UserWithoutToken | null> {
     const client: MongoClient = await getMongoClient();
     const db = client.db(process.env.DB ?? "notes-app")
@@ -52,6 +67,9 @@ export async function getUser(email: string): Promise<UserWithoutToken | null> {
     }
 }
 
+/*
+Login user with email and password, returns a proper BasicResponse with token
+*/
 export async function loginUser(email: string, password: string): Promise<BasicResponse | null> {
 
     const user = await getUser(email);
