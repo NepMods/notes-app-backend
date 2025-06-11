@@ -1,8 +1,9 @@
-require("dotenv").config();
-const { MongoClient, ServerApiVersion } = require("mongodb");
 
+import { MongoClient, ServerApiVersion } from "mongodb"
+import { configDotenv } from "dotenv";
+configDotenv();
 
-const uri = process.env.MONGODB_URI | null;
+const uri : string | null = process.env.MONGODB_URI ?? "";
 
 
 const options = {
@@ -20,8 +21,8 @@ const options = {
     minPoolSize: 5,
 }
 
-let client = null;
-let cachedClient = null;
+let client : MongoClient | null = null;
+let cachedClient: Promise<MongoClient> | null = null;
 
 const createClient = () => {
     if (!uri) {
