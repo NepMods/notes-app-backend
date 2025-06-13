@@ -3,6 +3,10 @@
 
 Backend implementation for notes app demo Project in express.js for DeskGoo.
 
+# Notes App Frontend (Flutter)
+
+This is the [Notes App Frontend](https://github.com/NepMods/notes-app). It allows users to register, log in, and manage their notes securely through a sleek and modern UI.
+
 
 ## API Reference
 
