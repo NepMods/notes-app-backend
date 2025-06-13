@@ -1,5 +1,5 @@
 import express from "express"
-import {hash} from "bcrypt"
+import { hash } from "bcrypt"
 import { getMongoClient } from "../../libs/mongodb";
 import { checkUser, getUser, loginUser } from "../../libs/users";
 import { BasicResponse } from "../../models/response";
@@ -22,25 +22,25 @@ export async function login(req: express.Request, res: express.Response<BasicRes
 
     if (!user) {
         res.json({
-            status: 500, 
+            status: 500,
             error: true,
             message: "User Doesnt Exists",
             data: []
         })
-        return;    
+        return;
     }
 
     // Login
-    const result = await loginUser(email, password); 
+    const result = await loginUser(email, password);
 
     if (result) {
         res.json(result)
-        return;    
+        return;
     }
     res.json({
         status: 500,
         error: true,
-        message: "Internal Server Error",
+        message: "Invalid Email or Password",
         data: []
     });
 
