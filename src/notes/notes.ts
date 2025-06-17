@@ -106,6 +106,7 @@ export async function updateNoteForUser(req: CustomRequest, res: express.Respons
             error: false,
             data: [],
         })
+        return;
     }
     res.json({
         status: 400,
@@ -155,6 +156,7 @@ export async function addNoteForUser(req: CustomRequest, res: express.Response<B
             error: false,
             data: [],
         })
+        return;
     }
     res.json({
         status: 400,
